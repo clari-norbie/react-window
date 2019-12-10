@@ -426,12 +426,14 @@ export default function createGridComponent({
           rowIndex <= rowStopIndex;
           rowIndex++
         ) {
+          const rowItems = [];
+          const rowOffset = getRowOffset(this.props, rowIndex, this._instanceProps);
           for (
             let columnIndex = columnStartIndex;
             columnIndex <= columnStopIndex;
             columnIndex++
           ) {
-            items.push(
+            rowItems.push(
               createElement(children, {
                 columnIndex,
                 data: itemData,
@@ -442,8 +444,23 @@ export default function createGridComponent({
               })
             );
           }
+          items.push(
+            createElement(
+              'div',
+              {
+                style: {
+                  height: getRowHeight(this.props, rowIndex, this._instanceProps),
+                  position: 'absolute',
+                  top: rowOffset,
+                  width: '100%',
+                }
+              },
+              rowItems
+            )
+          );
         }
       }
+
 
       // Read this value AFTER items have been created,
       // So their actual sizes (if variable) are taken into consideration.
@@ -620,7 +637,6 @@ export default function createGridComponent({
           position: 'absolute',
           left: isRtl ? undefined : offset,
           right: isRtl ? offset : undefined,
-          top: getRowOffset(this.props, rowIndex, this._instanceProps),
           height: getRowHeight(this.props, rowIndex, this._instanceProps),
           width: getColumnWidth(this.props, columnIndex, this._instanceProps),
         };
