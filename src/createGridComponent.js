@@ -387,6 +387,7 @@ export default function createGridComponent({
     }
 
     componentWillUnmount() {
+      console.log('unmounting');
       if (this._resetIsScrollingTimeoutId !== null) {
         cancelTimeout(this._resetIsScrollingTimeoutId);
       }
