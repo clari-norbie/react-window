@@ -387,7 +387,6 @@ export default function createGridComponent({
     }
 
     componentWillUnmount() {
-      console.log('unmounting');
       if (this._resetIsScrollingTimeoutId !== null) {
         cancelTimeout(this._resetIsScrollingTimeoutId);
       }
@@ -419,6 +418,10 @@ export default function createGridComponent({
         columnStopIndex,
       ] = this._getHorizontalRangeToRender();
       const [rowStartIndex, rowStopIndex] = this._getVerticalRangeToRender();
+
+      console.log('---');
+      console.log(rowStartIndex);
+      console.log(rowStopIndex);
 
       const items = [];
       if (columnCount > 0 && rowCount) {
