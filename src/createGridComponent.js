@@ -615,6 +615,8 @@ export default function createGridComponent({
     _getItemStyle = (rowIndex: number, columnIndex: number): Object => {
       const { columnWidth, direction, rowHeight } = this.props;
 
+      console.log('----');
+      console.log(shouldResetStyleCacheOnItemSizeChange);
       const itemStyleCache = this._getItemStyleCache(
         shouldResetStyleCacheOnItemSizeChange && columnWidth,
         shouldResetStyleCacheOnItemSizeChange && direction,
@@ -838,6 +840,7 @@ export default function createGridComponent({
       this.setState({ isScrolling: false }, () => {
         // Clear style cache after state update has been committed.
         // This way we don't break pure sCU for items that don't use isScrolling param.
+        console.log('cache should invalidate');
         this._getItemStyleCache(-1);
       });
     };
