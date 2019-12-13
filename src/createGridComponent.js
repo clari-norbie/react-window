@@ -452,6 +452,7 @@ export default function createGridComponent({
             createElement(
               'div',
               {
+                key: `gridRow${rowIndex}`,
                 style: {
                   height: getRowHeight(this.props, rowIndex, this._instanceProps),
                   position: 'absolute',
