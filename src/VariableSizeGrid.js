@@ -467,8 +467,6 @@ const VariableSizeGrid = createGridComponent({
         );
       }
 
-      console.log('cache invalidated')
-
       // We could potentially optimize further by only evicting styles after this index,
       // But since styles are only cached while scrolling is in progress-
       // It seems an unnecessary optimization.

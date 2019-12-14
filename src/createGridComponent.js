@@ -419,10 +419,6 @@ export default function createGridComponent({
       ] = this._getHorizontalRangeToRender();
       const [rowStartIndex, rowStopIndex] = this._getVerticalRangeToRender();
 
-      console.log('---');
-      console.log(rowStartIndex);
-      console.log(rowStopIndex);
-
       const items = [];
       if (columnCount > 0 && rowCount) {
         for (
