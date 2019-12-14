@@ -90,6 +90,7 @@ export type Props<T> = {|
   overscanCount?: number, // deprecated
   overscanRowCount?: number,
   overscanRowsCount?: number, // deprecated
+  rowClassName?: string,
   rowCount: number,
   rowHeight: itemSize,
   style?: Object,
@@ -406,6 +407,7 @@ export default function createGridComponent({
         itemKey = defaultItemKey,
         outerElementType,
         outerTagName,
+        rowClassName,
         rowCount,
         style,
         useIsScrolling,
@@ -448,6 +450,7 @@ export default function createGridComponent({
             createElement(
               'div',
               {
+                className: rowClassName,
                 key: `gridRow${rowIndex}`,
                 style: {
                   height: getRowHeight(this.props, rowIndex, this._instanceProps),
