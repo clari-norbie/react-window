@@ -80,6 +80,7 @@ export type Props<T> = {|
     data: T,
     rowIndex: number,
   |}) => any,
+  oddRowClassName?: string,
   onItemsRendered?: OnItemsRenderedCallback,
   onScroll?: OnScrollCallback,
   outerRef?: any,
@@ -405,6 +406,7 @@ export default function createGridComponent({
         innerTagName,
         itemData,
         itemKey = defaultItemKey,
+        oddRowClassName,
         outerElementType,
         outerTagName,
         rowClassName,
@@ -450,7 +452,7 @@ export default function createGridComponent({
             createElement(
               'div',
               {
-                className: rowClassName,
+                className: rowIndex % 2 !== 0 ? oddRowClassName : rowClassName,
                 key: `gridRow${rowIndex}`,
                 style: {
                   height: getRowHeight(this.props, rowIndex, this._instanceProps),
