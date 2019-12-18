@@ -470,7 +470,7 @@ export default function createGridComponent({
       // Re-add row 0 into items list; guarantees that row 0 is always present in the grid
       const stickyItems = [];
       for (
-        let columnIndex = columnStartIndex;
+        let columnIndex = Math.max(1, columnStartIndex);
         columnIndex <= columnStopIndex;
         columnIndex++
       ) {
@@ -675,12 +675,11 @@ export default function createGridComponent({
         );
         const isRtl = direction === 'rtl';
         itemStyleCache[key] = style = {
-          position: columnIndex === 0 ? 'sticky' : 'absolute',
+          position: absolute,
           left: isRtl ? undefined : offset,
           right: isRtl ? offset : undefined,
           height: getRowHeight(this.props, rowIndex, this._instanceProps),
           width: getColumnWidth(this.props, columnIndex, this._instanceProps),
-          zIndex: columnIndex === 0 ? 1 : 0,
         };
       }
 
