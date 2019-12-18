@@ -467,6 +467,43 @@ export default function createGridComponent({
         }
       }
 
+
+      const stickyColumnItems = [];
+      for (
+        let rowIndex = Math.max(1, rowStartIndex);
+        rowIndex <= rowStopIndex;
+        rowIndex++
+      ) {
+        stickyColumnItems.push(
+          createElement(children, {
+            columnIndex: 0,
+            data: itemData,
+            isScrolling: useIsScrolling ? isScrolling : undefined,
+            key: itemKey({ columnIndex: 0, data: itemData, rowIndex }),
+            rowIndex,
+            style: this._getItemStyle(rowIndex, 0),
+            zIndex: 1, // need z-index so that scrolling down the grid doesn't overlap the sticky row
+          })
+        )
+      }
+
+      items.unshift(
+        createElement(
+          'div',
+          {
+            key: `gridColumn0`,
+            style: {
+              height: '100%',
+              position: 'sticky',
+              top: getRowOffset(this.props, 1, this._instanceProps),
+              width: getColumnWidth(this.props, 0, this._instanceProps),
+              zIndex: 1,
+            }
+          },
+          stickyColumnItems
+        )
+      );
+
       // Re-add row 0 into items list; guarantees that row 0 is always present in the grid
       const stickyRowItems = [];
       for (
@@ -502,42 +539,6 @@ export default function createGridComponent({
             }
           },
           stickyRowItems
-        )
-      );
-
-      const stickyColumnItems = [];
-      for (
-        let rowIndex = Math.max(1, rowStartIndex);
-        rowIndex <= rowStopIndex;
-        rowIndex++
-      ) {
-        stickyColumnItems.push(
-          createElement(children, {
-            columnIndex: 0,
-            data: itemData,
-            isScrolling: useIsScrolling ? isScrolling : undefined,
-            key: itemKey({ columnIndex: 0, data: itemData, rowIndex }),
-            rowIndex,
-            style: this._getItemStyle(rowIndex, 0),
-            zIndex: 1, // need z-index so that scrolling down the grid doesn't overlap the sticky row
-          })
-        )
-      }
-
-      items.unshift(
-        createElement(
-          'div',
-          {
-            key: `gridColumn0`,
-            style: {
-              height: '100%',
-              position: 'sticky',
-              top: getRowOffset(this.props, 1, this._instanceProps),
-              width: getColumnWidth(this.props, 0, this._instanceProps),
-              zIndex: 1,
-            }
-          },
-          stickyColumnItems
         )
       );
 
