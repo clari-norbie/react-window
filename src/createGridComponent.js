@@ -675,7 +675,7 @@ export default function createGridComponent({
         );
         const isRtl = direction === 'rtl';
         itemStyleCache[key] = style = {
-          position: absolute,
+          position: 'absolute',
           left: isRtl ? undefined : offset,
           right: isRtl ? offset : undefined,
           height: getRowHeight(this.props, rowIndex, this._instanceProps),
