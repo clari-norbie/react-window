@@ -464,7 +464,6 @@ export default function createGridComponent({
                   width: '100%',
                 }
               },
-              rowItems
             )
           );
           // I'm leveraging this already existing loop, but this is probably
