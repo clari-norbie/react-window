@@ -481,8 +481,12 @@ export default function createGridComponent({
             isScrolling: useIsScrolling ? isScrolling : undefined,
             key: itemKey({ columnIndex: 0, data: itemData, rowIndex }),
             rowIndex,
-            style: this._getItemStyle(rowIndex, 0),
-            top: getRowOffset(this.props, rowIndex, this._instanceProps),
+            style: {
+              position: 'absolute',
+              height: getRowHeight(this.props, rowIndex, this._instanceProps),
+              width: getColumnWidth(this.props, columnIndex, this._instanceProps),
+              top: getRowOffset(this.props, rowIndex, this._instanceProps),
+            },
             zIndex: 1, // need z-index so that scrolling down the grid doesn't overlap the sticky row
           })
         )
