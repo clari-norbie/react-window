@@ -497,7 +497,6 @@ export default function createGridComponent({
               position: 'sticky',
               top: getRowOffset(this.props, 0, this._instanceProps),
               width: '100%',
-              zIndex: 1,
             }
           },
           stickyItems
