@@ -456,7 +456,7 @@ export default function createGridComponent({
                 key: `gridRow${rowIndex}`,
                 style: {
                   height: getRowHeight(this.props, rowIndex, this._instanceProps),
-                  position: 'absolute',
+                  position: rowIndex === 0 ? 'sticky' : 'absolute',
                   top: rowOffset,
                   width: '100%',
                 }
