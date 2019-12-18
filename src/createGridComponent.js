@@ -482,6 +482,7 @@ export default function createGridComponent({
             key: itemKey({ columnIndex, data: itemData, rowIndex: 0 }),
             rowIndex: 0,
             style: this._getItemStyle(0, columnIndex),
+            zIndex: 1,
           })
         )
       }
@@ -496,6 +497,7 @@ export default function createGridComponent({
               position: 'sticky',
               top: getRowOffset(this.props, 0, this._instanceProps),
               width: '100%',
+              zIndex: 1,
             }
           },
           stickyItems
