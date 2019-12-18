@@ -80,7 +80,6 @@ export type Props<T> = {|
     data: T,
     rowIndex: number,
   |}) => any,
-  oddRowClassName?: string,
   onItemsRendered?: OnItemsRenderedCallback,
   onScroll?: OnScrollCallback,
   outerRef?: any,
@@ -91,7 +90,6 @@ export type Props<T> = {|
   overscanCount?: number, // deprecated
   overscanRowCount?: number,
   overscanRowsCount?: number, // deprecated
-  rowClassName?: string,
   rowCount: number,
   rowHeight: itemSize,
   style?: Object,
@@ -406,10 +404,8 @@ export default function createGridComponent({
         innerTagName,
         itemData,
         itemKey = defaultItemKey,
-        oddRowClassName,
         outerElementType,
         outerTagName,
-        rowClassName,
         rowCount,
         style,
         useIsScrolling,
@@ -513,7 +509,8 @@ export default function createGridComponent({
             zIndex: 1,
           },
         })
-      )
+      );
+
       // Read this value AFTER items have been created,
       // So their actual sizes (if variable) are taken into consideration.
       const estimatedTotalHeight = getEstimatedTotalHeight(
@@ -689,6 +686,7 @@ export default function createGridComponent({
           position: 'absolute',
           left: isRtl ? undefined : offset,
           right: isRtl ? offset : undefined,
+          top: getRowOffset(this.props, rowIndex, this._instanceProps),
           height: getRowHeight(this.props, rowIndex, this._instanceProps),
           width: getColumnWidth(this.props, columnIndex, this._instanceProps),
         };
