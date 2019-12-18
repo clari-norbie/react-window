@@ -528,18 +528,17 @@ export default function createGridComponent({
         createElement(
           'div',
           {
-            className: rowClassName,
-            key: `gridRow0`,
+            key: `gridColumn0`,
             style: {
-              height: getRowHeight(this.props, 0, this._instanceProps),
+              height: '100%',
               position: 'sticky',
-              top: getRowOffset(this.props, 0, this._instanceProps),
+              top: getRowOffset(this.props, 1, this._instanceProps),
               zIndex: 1,
             }
           },
           stickyColumnItems
         )
-      )
+      );
 
       // Read this value AFTER items have been created,
       // So their actual sizes (if variable) are taken into consideration.
@@ -713,7 +712,7 @@ export default function createGridComponent({
         );
         const isRtl = direction === 'rtl';
         itemStyleCache[key] = style = {
-          position: 'absolute',
+          position: columnIndex === 0 ? 'sticky' : 'absolute',
           left: isRtl ? undefined : offset,
           right: isRtl ? offset : undefined,
           height: getRowHeight(this.props, rowIndex, this._instanceProps),
