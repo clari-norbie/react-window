@@ -426,7 +426,7 @@ export default function createGridComponent({
       const items = [];
       if (columnCount > 0 && rowCount) {
         for (
-          let rowIndex = rowStartIndex;
+          let rowIndex = Math.max(1, rowStartIndex); // Skip row 0, render later for stickiness
           rowIndex <= rowStopIndex;
           rowIndex++
         ) {
@@ -467,6 +467,40 @@ export default function createGridComponent({
         }
       }
 
+      // Re-add row 0 into items list; guarantees that row 0 is always present in the grid
+      const stickyItems = [];
+      for (
+        let columnIndex = columnStartIndex;
+        columnIndex <= columnStopIndex;
+        columnIndex++
+      ) {
+        stickyItems.push(
+          createElement(children, {
+            columnIndex,
+            data: itemData,
+            isScrolling: useIsScrolling ? isScrolling : undefined,
+            key: itemKey({ columnIndex, data: itemData, rowIndex }),
+            rowIndex: 0,
+            style: this._getItemStyle(rowIndex, columnIndex),
+          })
+        )
+      }
+      items.unshift(
+        createElement(
+          'div',
+          {
+            className: rowClassName,
+            key: `gridRow0`,
+            style: {
+              height: getRowHeight(this.props, 0, this._instanceProps),
+              position: 'sticky',
+              top: getRowOffset(this.props, 0, this._instanceProps),
+              width: '100%',
+            }
+          },
+          stickyItems
+        )
+      );
 
       // Read this value AFTER items have been created,
       // So their actual sizes (if variable) are taken into consideration.
