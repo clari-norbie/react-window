@@ -505,7 +505,7 @@ export default function createGridComponent({
         )
       );
 
-      const stickyColumnItems;
+      const stickyColumnItems = [];
       for (
         let rowIndex = Math.max(1, rowStartIndex);
         rowIndex <= rowStopIndex;
