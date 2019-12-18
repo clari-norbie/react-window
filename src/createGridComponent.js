@@ -80,7 +80,6 @@ export type Props<T> = {|
     data: T,
     rowIndex: number,
   |}) => any,
-  oddRowClassName?: string,
   onItemsRendered?: OnItemsRenderedCallback,
   onScroll?: OnScrollCallback,
   outerRef?: any,
@@ -91,7 +90,6 @@ export type Props<T> = {|
   overscanCount?: number, // deprecated
   overscanRowCount?: number,
   overscanRowsCount?: number, // deprecated
-  rowClassName?: string,
   rowCount: number,
   rowHeight: itemSize,
   style?: Object,
@@ -406,10 +404,8 @@ export default function createGridComponent({
         innerTagName,
         itemData,
         itemKey = defaultItemKey,
-        oddRowClassName,
         outerElementType,
         outerTagName,
-        rowClassName,
         rowCount,
         style,
         useIsScrolling,
@@ -450,22 +446,6 @@ export default function createGridComponent({
           rowIndex <= rowStopIndex;
           rowIndex++
         ) {
-          const rowOffset = getRowOffset(this.props, rowIndex, this._instanceProps);
-          items.push(
-            createElement(
-              'div',
-              {
-                className: rowIndex % 2 !== 0 ? oddRowClassName : rowClassName,
-                key: `gridRow${rowIndex}`,
-                style: {
-                  height: getRowHeight(this.props, rowIndex, this._instanceProps),
-                  position: 'absolute',
-                  top: rowOffset,
-                  width: '100%',
-                }
-              },
-            )
-          );
           // I'm leveraging this already existing loop, but this is probably
           // better as its own loop for clarity.
           leftStickyItems.push(
