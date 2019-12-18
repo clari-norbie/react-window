@@ -533,6 +533,7 @@ export default function createGridComponent({
               height: '100%',
               position: 'sticky',
               top: getRowOffset(this.props, 1, this._instanceProps),
+              width: getColumnWidth(this.props, 0, this._instanceProps),
               zIndex: 1,
             }
           },
