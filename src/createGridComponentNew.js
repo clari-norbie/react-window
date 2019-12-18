@@ -424,51 +424,20 @@ export default function createGridComponent({
       const [rowStartIndex, rowStopIndex] = this._getVerticalRangeToRender();
 
       const items = [];
-      const topStickyItems = [];
-      const leftStickyItems = [];
-
       if (columnCount > 0 && rowCount) {
         for (
-          let columnIndex = Math.max(1, columnStartIndex); // Skip column 0
-          columnIndex <= columnStopIndex;
-          columnIndex++
-        ) {
-          topStickyItems.push(
-            createElement(children, {
-              columnIndex,
-              data: itemData,
-              isScrolling: useIsScrolling ? isScrolling : undefined,
-              key: itemKey({ columnIndex, data: itemData, rowIndex: 0 }),
-              rowIndex: 0,
-              style: this._getItemStyle(0, columnIndex),
-            })
-          );
-        }
-
-        for (
-          let rowIndex = Math.max(1, rowStartIndex); // Skip row 0
+          let rowIndex = Math.max(1, rowStartIndex); // Skip row 0, render later for stickiness
           rowIndex <= rowStopIndex;
           rowIndex++
         ) {
-          // I'm leveraging this already existing loop, but this is probably
-          // better as its own loop for clarity.
-          leftStickyItems.push(
-            createElement(children, {
-              columnIndex: 0,
-              data: itemData,
-              isScrolling: useIsScrolling ? isScrolling : undefined,
-              key: itemKey({ columnIndex: 0, data: itemData, rowIndex }),
-              rowIndex,
-              style: this._getItemStyle(rowIndex, 0),
-            })
-          );
-
+          const rowItems = [];
+          const rowOffset = getRowOffset(this.props, rowIndex, this._instanceProps);
           for (
-            let columnIndex = Math.max(1, columnStartIndex); // Skip column 0
+            let columnIndex = Math.max(1, columnStartIndex);
             columnIndex <= columnStopIndex;
             columnIndex++
           ) {
-            items.push(
+            rowItems.push(
               createElement(children, {
                 columnIndex,
                 data: itemData,
@@ -479,41 +448,106 @@ export default function createGridComponent({
               })
             );
           }
+          items.push(
+            createElement(
+              'div',
+              {
+                className: rowIndex % 2 !== 0 ? oddRowClassName : rowClassName,
+                key: `gridRow${rowIndex}`,
+                style: {
+                  height: getRowHeight(this.props, rowIndex, this._instanceProps),
+                  position: 'absolute',
+                  top: rowOffset,
+                  width: '100%',
+                }
+              },
+              rowItems
+            )
+          );
         }
       }
 
-      const topLeftStyle = this._getItemStyle(0, 0);
+
+      const stickyColumnItems = [];
+      for (
+        let rowIndex = Math.max(1, rowStartIndex);
+        rowIndex <= rowStopIndex;
+        rowIndex++
+      ) {
+        stickyColumnItems.push(
+          createElement(children, {
+            columnIndex: 0,
+            data: itemData,
+            isScrolling: useIsScrolling ? isScrolling : undefined,
+            key: itemKey({ columnIndex: 0, data: itemData, rowIndex }),
+            rowIndex,
+            style: {
+              position: 'absolute',
+              height: getRowHeight(this.props, rowIndex, this._instanceProps),
+              width: getColumnWidth(this.props, 0, this._instanceProps),
+              top: getRowOffset(this.props, rowIndex, this._instanceProps),
+            },
+            zIndex: 1, // need z-index so that scrolling down the grid doesn't overlap the sticky row
+          })
+        )
+      }
 
       items.unshift(
-        createElement('div', {
-          children: leftStickyItems,
-          key: 'left-sticky',
-          className: 'left-sticky',
-          style: {
-            height: estimatedTotalHeight,
-            width: topLeftStyle.width,
-            position: 'sticky',
-            left: 0,
-            zIndex: 1,
-            transform: `translateY(-${topLeftStyle.height}px)`,
+        createElement(
+          'div',
+          {
+            key: `gridColumn0`,
+            style: {
+              height: '100%',
+              position: 'sticky',
+              left: 0,
+              top: getRowOffset(this.props, 1, this._instanceProps),
+              width: getColumnWidth(this.props, 0, this._instanceProps),
+              zIndex: 1,
+            }
           },
-        })
+          stickyColumnItems
+        )
       );
 
+      // Re-add row 0 into items list; guarantees that row 0 is always present in the grid
+      const stickyRowItems = [];
+      for (
+        let columnIndex = Math.max(1, columnStartIndex);
+        columnIndex <= columnStopIndex;
+        columnIndex++
+      ) {
+        stickyRowItems.push(
+          createElement(children, {
+            columnIndex,
+            data: itemData,
+            isScrolling: useIsScrolling ? isScrolling : undefined,
+            key: itemKey({ columnIndex, data: itemData, rowIndex: 0 }),
+            rowIndex: 0,
+            style: this._getItemStyle(0, columnIndex),
+            zIndex: 1, // need z-index so that scrolling down the grid doesn't overlap the sticky row
+          })
+        )
+      }
+
       items.unshift(
-        createElement('div', {
-          children: topStickyItems,
-          key: 'top-sticky',
-          className: 'top-sticky',
-          style: {
-            height: topLeftStyle.height,
-            width: estimatedTotalWidth,
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
+        createElement(
+          'div',
+          {
+            className: rowClassName,
+            key: `gridRow0`,
+            style: {
+              height: getRowHeight(this.props, 0, this._instanceProps),
+              position: 'sticky',
+              top: getRowOffset(this.props, 0, this._instanceProps),
+              width: '100%',
+              zIndex: 1,
+            }
           },
-        })
-      )
+          stickyRowItems
+        )
+      );
+
       // Read this value AFTER items have been created,
       // So their actual sizes (if variable) are taken into consideration.
       const estimatedTotalHeight = getEstimatedTotalHeight(
