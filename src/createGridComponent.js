@@ -523,11 +523,8 @@ export default function createGridComponent({
       );
 
       return createElement(
-        [outerElementType || outerTagName || 'div',
+        'div',
         {
-          className,
-          onScroll: this._onScroll,
-          ref: this._outerRefSetter,
           style: {
             position: 'relative',
             height,
@@ -537,33 +534,80 @@ export default function createGridComponent({
             willChange: 'transform',
             direction,
             ...style,
-          },
-        },
-        createElement(children, {
-          columnIndex: 0,
-          data: itemData,
-          isScrolling: useIsScrolling ? isScrolling : undefined,
-          key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 0 }),
-          rowIndex: 0,
-          style: {
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            height: getRowHeight(this.props, 0, this._instanceProps),
-            width: getColumnWidth(this.props, 0, this._instanceProps),
-          },
-          zIndex: 1,
-        })],
-        createElement(innerElementType || innerTagName || 'div', {
-          children: items,
-          ref: innerRef,
-          style: {
-            height: estimatedTotalHeight,
-            pointerEvents: isScrolling ? 'none' : undefined,
-            width: estimatedTotalWidth,
-          },
-        })
-      );
+          }
+        }, [
+          createElement(children, {
+            columnIndex: 0,
+            data: itemData,
+            isScrolling: useIsScrolling ? isScrolling : undefined,
+            key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 0 }),
+            rowIndex: 0,
+            style: {
+              position: 'sticky',
+              left: 0,
+              top: 0,
+              height: getRowHeight(this.props, 0, this._instanceProps),
+              width: getColumnWidth(this.props, 0, this._instanceProps),
+            },
+            zIndex: 1,
+          }),
+          createElement(
+            outerElementType || outerTagName || 'div',
+            {
+              className,
+              onScroll: this._onScroll,
+              ref: this._outerRefSetter,
+              style: {
+                position: 'relative',
+                height,
+                width,
+                overflow: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                willChange: 'transform',
+                direction,
+                ...style,
+              },
+            },
+            createElement(innerElementType || innerTagName || 'div', {
+              children: items,
+              ref: innerRef,
+              style: {
+                height: estimatedTotalHeight,
+                pointerEvents: isScrolling ? 'none' : undefined,
+                width: estimatedTotalWidth,
+              },
+            })
+          )
+        ]
+      )
+
+      // return createElement(
+      //   outerElementType || outerTagName || 'div',
+      //   {
+      //     className,
+      //     onScroll: this._onScroll,
+      //     ref: this._outerRefSetter,
+      //     style: {
+      //       position: 'relative',
+      //       height,
+      //       width,
+      //       overflow: 'auto',
+      //       WebkitOverflowScrolling: 'touch',
+      //       willChange: 'transform',
+      //       direction,
+      //       ...style,
+      //     },
+      //   },
+      //   createElement(innerElementType || innerTagName || 'div', {
+      //     children: items,
+      //     ref: innerRef,
+      //     style: {
+      //       height: estimatedTotalHeight,
+      //       pointerEvents: isScrolling ? 'none' : undefined,
+      //       width: estimatedTotalWidth,
+      //     },
+      //   })
+      // );
     }
 
     _callOnItemsRendered: (
