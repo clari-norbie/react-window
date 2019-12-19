@@ -543,7 +543,7 @@ export default function createGridComponent({
             key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 0 }),
             rowIndex: 0,
             style: {
-              position: 'sticky',
+              position: 'absolute',
               left: 0,
               top: 0,
               height: getRowHeight(this.props, 0, this._instanceProps),
