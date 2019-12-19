@@ -480,17 +480,6 @@ export default function createGridComponent({
 
       const topLeftStyle = this._getItemStyle(0, 0);
 
-      leftStickyItems.unshift(
-        createElement(children, {
-          columnIndex: 0,
-          data: itemData,
-          isScrolling: useIsScrolling ? isScrolling : undefined,
-          key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 0 }),
-          rowIndex: 0,
-          style: this._getItemStyle(0, 0),
-        })
-      );
-
       items.unshift(
         createElement('div', {
           children: leftStickyItems,
@@ -550,6 +539,22 @@ export default function createGridComponent({
             ...style,
           },
         },
+        createElement(children, {
+          columnIndex: 0,
+          data: itemData,
+          isScrolling: useIsScrolling ? isScrolling : undefined,
+          key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 0 }),
+          rowIndex: 0,
+          style: {
+            position: 'sticky',
+            left: isRtl ? undefined : offset,
+            right: isRtl ? offset : undefined,
+            top: getRowOffset(this.props, rowIndex, this._instanceProps),
+            height: getRowHeight(this.props, rowIndex, this._instanceProps),
+            width: getColumnWidth(this.props, columnIndex, this._instanceProps),
+          },
+          zIndex: 1,
+        },
         createElement(innerElementType || innerTagName || 'div', {
           children: items,
           ref: innerRef,
@@ -558,7 +563,7 @@ export default function createGridComponent({
             pointerEvents: isScrolling ? 'none' : undefined,
             width: estimatedTotalWidth,
           },
-        })
+        }))
       );
     }
 
