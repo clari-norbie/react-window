@@ -480,6 +480,17 @@ export default function createGridComponent({
 
       const topLeftStyle = this._getItemStyle(0, 0);
 
+      topStickyItems.unshift(
+        createElement(children, {
+          columnIndex: 0,
+          data: itemData,
+          isScrolling: useIsScrolling ? isScrolling : undefined,
+          key: itemKey({ 0, data: itemData, rowIndex: 0 }),
+          rowIndex: 0,
+          style: this._getItemStyle(0, 0),
+        })
+      );
+
       items.unshift(
         createElement('div', {
           children: leftStickyItems,
