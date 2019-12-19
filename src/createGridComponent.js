@@ -522,10 +522,8 @@ export default function createGridComponent({
         this._instanceProps
       );
 
-
-
       return createElement(
-        outerElementType || outerTagName || 'div',
+        [outerElementType || outerTagName || 'div',
         {
           className,
           onScroll: this._onScroll,
@@ -541,21 +539,21 @@ export default function createGridComponent({
             ...style,
           },
         },
-        [createElement(children, {
+        createElement(children, {
           columnIndex: 0,
           data: itemData,
           isScrolling: useIsScrolling ? isScrolling : undefined,
           key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 0 }),
           rowIndex: 0,
           style: {
-            position: 'sticky',
+            position: 'absolute',
             left: 0,
             top: 0,
             height: getRowHeight(this.props, 0, this._instanceProps),
             width: getColumnWidth(this.props, 0, this._instanceProps),
           },
           zIndex: 1,
-        }),
+        })],
         createElement(innerElementType || innerTagName || 'div', {
           children: items,
           ref: innerRef,
@@ -564,7 +562,7 @@ export default function createGridComponent({
             pointerEvents: isScrolling ? 'none' : undefined,
             width: estimatedTotalWidth,
           },
-        })]
+        })
       );
     }
 
