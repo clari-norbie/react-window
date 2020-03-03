@@ -480,6 +480,18 @@ export default function createGridComponent({
 
       const topLeftStyle = this._getItemStyle(0, 0);
 
+      items.push(
+        createElement('div', {
+          className: 'grid-background',
+          key: 'grid-background',
+          style: {
+            height: "100%",
+            transform: `translateY(-${topLeftStyle.height}px)`,
+            width: "100%",
+          }
+        })
+      );
+
       items.unshift(
         createElement('div', {
           children: leftStickyItems,
