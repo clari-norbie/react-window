@@ -63,6 +63,7 @@ type InnerProps = {|
 |};
 
 export type Props<T> = {|
+  backgroundClassName?: string,
   children: RenderComponent<T>,
   className?: string,
   columnCount: number,
@@ -394,6 +395,7 @@ export default function createGridComponent({
 
     render() {
       const {
+        backgroundClassName,
         children,
         className,
         columnCount,
@@ -478,19 +480,19 @@ export default function createGridComponent({
         }
       }
 
-      const topLeftStyle = this._getItemStyle(0, 0);
-
       items.push(
         createElement('div', {
-          className: 'grid-background',
+          className: backgroundClassName,
           key: 'grid-background',
           style: {
             height: "100%",
-            transform: `translateY(-${topLeftStyle.height}px)`,
             width: "100%",
+            zIndex: 0,
           }
         })
       );
+
+      const topLeftStyle = this._getItemStyle(0, 0);
 
       items.unshift(
         createElement('div', {
@@ -502,7 +504,7 @@ export default function createGridComponent({
             width: topLeftStyle.width,
             position: 'sticky',
             left: 0,
-            zIndex: 1,
+            zIndex: 2,
             transform: `translateY(-${topLeftStyle.height}px)`,
           },
         })
@@ -518,7 +520,7 @@ export default function createGridComponent({
             width: estimatedTotalWidth,
             position: 'sticky',
             top: 0,
-            zIndex: 1,
+            zIndex: 2,
           },
         })
       );
@@ -760,6 +762,7 @@ export default function createGridComponent({
           top: getRowOffset(this.props, rowIndex, this._instanceProps),
           height: getRowHeight(this.props, rowIndex, this._instanceProps),
           width: getColumnWidth(this.props, columnIndex, this._instanceProps),
+          zIndex: 1,
         };
       }
 
