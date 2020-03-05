@@ -497,18 +497,6 @@ export default function createGridComponent({
         }
       }
 
-      items.unshift(
-        createElement('div', {
-          className: backgroundClassName,
-          key: 'grid-background',
-          style: {
-            height: '100%',
-            width: '100%',
-            zIndex: 0,
-          }
-        })
-      );
-
       const topLeftStyle = this._getItemStyle(0, 0);
       const botLeftStyle = this._getItemStyle(1, 0);
 
@@ -540,6 +528,18 @@ export default function createGridComponent({
             top: 0,
             zIndex: 2,
           },
+        })
+      );
+
+      items.unshift(
+        createElement('div', {
+          className: backgroundClassName,
+          key: 'grid-background',
+          style: {
+            height: '100%',
+            width: '100%',
+            zIndex: 0,
+          }
         })
       );
 
