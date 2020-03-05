@@ -456,7 +456,7 @@ export default function createGridComponent({
         }
 
         for (
-          let rowIndex = Math.max(1, rowStartIndex); // Skip row 0
+          let rowIndex = Math.max(2, rowStartIndex); // Skip row 0, 1
           rowIndex <= rowStopIndex;
           rowIndex++
         ) {
@@ -564,9 +564,7 @@ export default function createGridComponent({
         this._instanceProps
       );
 
-      console.log('______');
-      console.log(height);
-      console.log(botLeftStyle.height);
+      const innerGridHeight = height - botLeftStyle.height;
 
       return [
         createElement(
@@ -606,7 +604,7 @@ export default function createGridComponent({
                 ref: this._outerRefSetter,
                 style: {
                   position: 'relative',
-                  height: `calc(${height} - ${botLeftStyle.height})`,
+                  height: innerGridHeight,
                   width,
                   overflow: 'auto',
                   WebkitOverflowScrolling: 'touch',
