@@ -600,8 +600,8 @@ export default function createGridComponent({
               top: 0,
               height: getRowHeight(this.props, 0, this._instanceProps),
               width: getColumnWidth(this.props, 0, this._instanceProps),
+              zIndex: 1,
             },
-            zIndex: 1,
           }),
           createElement(children, {
             columnIndex: 0,
@@ -614,9 +614,9 @@ export default function createGridComponent({
               left: 0,
               height: getRowHeight(this.props, 1, this._instanceProps),
               position: 'absolute',
-              width: getColumnWidth(this.props, 1, this._instanceProps),
+              width: getColumnWidth(this.props, 0, this._instanceProps),
+              zIndex: 1,
             },
-            zIndex: 1,
           }),
           createElement(
             outerElementType || outerTagName || 'div',
