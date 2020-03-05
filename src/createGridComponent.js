@@ -443,6 +443,8 @@ export default function createGridComponent({
             })
           );
 
+          const botStickyStyle = this._getItemStyle(1, columnIndex);
+
           botStickyItems.push(
             createElement(children, {
               columnIndex,
@@ -450,7 +452,10 @@ export default function createGridComponent({
               isScrolling: useIsScrolling ? isScrolling : undefined,
               key: itemKey({ columnIndex, data: itemData, rowIndex: 1 }),
               rowIndex: 1,
-              style: this._getItemStyle(1, columnIndex),
+              style: {
+                top: '0px',
+                ...botStickyStyle,
+              },
             })
           );
         }
@@ -565,6 +570,8 @@ export default function createGridComponent({
       );
 
       const innerGridHeight = height - botLeftStyle.height;
+
+      console.log('did I update?');
 
       return [
         createElement(
