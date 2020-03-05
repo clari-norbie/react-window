@@ -500,13 +500,25 @@ export default function createGridComponent({
       const topLeftStyle = this._getItemStyle(0, 0);
       const botLeftStyle = this._getItemStyle(1, 0);
 
+      items.push(
+        createElement('div', {
+          className: backgroundClassName,
+          key: 'grid-background',
+          style: {
+            height: '100%',
+            width: '100%',
+            zIndex: 0,
+          }
+        })
+      );
+
+
       items.unshift(
         createElement('div', {
           children: leftStickyItems,
           key: 'left-sticky',
           className: 'left-sticky',
           style: {
-            height: height,
             width: topLeftStyle.width,
             position: 'sticky',
             left: 0,
@@ -523,23 +535,10 @@ export default function createGridComponent({
           className: 'top-sticky',
           style: {
             height: topLeftStyle.height,
-            width: width,
             position: 'sticky',
             top: 0,
             zIndex: 2,
           },
-        })
-      );
-
-      items.unshift(
-        createElement('div', {
-          className: backgroundClassName,
-          key: 'grid-background',
-          style: {
-            height: '100%',
-            width: '100%',
-            zIndex: 0,
-          }
         })
       );
 
