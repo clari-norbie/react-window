@@ -603,6 +603,21 @@ export default function createGridComponent({
             },
             zIndex: 1,
           }),
+          createElement(children, {
+            columnIndex: 0,
+            data: itemData,
+            isScrolling: useIsScrolling ? isScrolling : undefined,
+            key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 0 }),
+            rowIndex: 1,
+            style: {
+              bottom: 0,
+              left: 0,
+              height: getRowHeight(this.props, 1, this._instanceProps),
+              position: 'absolute',
+              width: getColumnWidth(this.props, 1, this._instanceProps),
+            },
+            zIndex: 1,
+          }),
           createElement(
             outerElementType || outerTagName || 'div',
             {
@@ -633,6 +648,7 @@ export default function createGridComponent({
               createElement('div', {
                 children: botStickyItems,
                 style: {
+                  bottom: '0px',
                   position: 'sticky',
                   height: botLeftStyle.height,
                   width: estimatedTotalWidth,
