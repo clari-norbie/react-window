@@ -620,16 +620,27 @@ export default function createGridComponent({
                 ...style,
               },
             },
-            createElement(innerElementType || innerTagName || 'div', {
-              children: items,
-              ref: innerRef,
-              style: {
-                height: estimatedTotalHeight,
-                pointerEvents: isScrolling ? 'none' : undefined,
-                width: estimatedTotalWidth,
-              },
-            })
-          )
+            [
+              createElement(innerElementType || innerTagName || 'div', {
+                children: items,
+                ref: innerRef,
+                style: {
+                  height: estimatedTotalHeight,
+                  pointerEvents: isScrolling ? 'none' : undefined,
+                  width: estimatedTotalWidth,
+                },
+              }),
+              createElement('div', {
+                children: botStickyItems,
+                style: {
+                  position: 'sticky',
+                  height: botLeftStyle.height,
+                  width: estimatedTotalWidth,
+                  zIndex: 2,
+                },
+              }),
+            ]
+          ),
         ]
       );
 
