@@ -542,6 +542,22 @@ export default function createGridComponent({
         })
       );
 
+      botStickyItems.push(
+        createElement('div', {
+          columnIndex: 0,
+          data: itemData,
+          key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 1 }),
+          rowIndex: 1,
+          style: {
+            left: 0,
+            height: getRowHeight(this.props, 1, this._instanceProps),
+            position: 'sticky',
+            width: getColumnWidth(this.props, 0, this._instanceProps),
+            zIndex: 3,
+          },
+        })
+      );
+
       // items.unshift(
       //   createElement('div', {
       //     children: botStickyItems,
@@ -636,21 +652,21 @@ export default function createGridComponent({
                   zIndex: 2,
                 },
               }),
-              createElement(children, {
-                columnIndex: 0,
-                data: itemData,
-                isScrolling: useIsScrolling ? isScrolling : undefined,
-                key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 1 }),
-                rowIndex: 1,
-                style: {
-                  bottom: 0,
-                  left: 0,
-                  height: getRowHeight(this.props, 1, this._instanceProps),
-                  position: 'sticky',
-                  width: getColumnWidth(this.props, 0, this._instanceProps),
-                  zIndex: 3,
-                },
-              })
+              // createElement(children, {
+              //   columnIndex: 0,
+              //   data: itemData,
+              //   isScrolling: useIsScrolling ? isScrolling : undefined,
+              //   key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 1 }),
+              //   rowIndex: 1,
+              //   style: {
+              //     bottom: 0,
+              //     left: 0,
+              //     height: getRowHeight(this.props, 1, this._instanceProps),
+              //     position: 'sticky',
+              //     width: getColumnWidth(this.props, 0, this._instanceProps),
+              //     zIndex: 3,
+              //   },
+              // })
             ]
           ),
         ]
