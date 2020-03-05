@@ -448,7 +448,7 @@ export default function createGridComponent({
               columnIndex,
               data: itemData,
               isScrolling: useIsScrolling ? isScrolling : undefined,
-              key: itemKey({ columnIndex, data: itemData, rowIndex: 0 }),
+              key: itemKey({ columnIndex, data: itemData, rowIndex: 1 }),
               rowIndex: 1,
               style: this._getItemStyle(1, columnIndex),
             })
@@ -497,8 +497,8 @@ export default function createGridComponent({
           className: backgroundClassName,
           key: 'grid-background',
           style: {
-            height: "100%",
-            width: "100%",
+            height: '100%',
+            width: '100%',
             zIndex: 0,
           }
         })
@@ -513,7 +513,7 @@ export default function createGridComponent({
           key: 'left-sticky',
           className: 'left-sticky',
           style: {
-            height: estimatedTotalHeight,
+            height: height,
             width: topLeftStyle.width,
             position: 'sticky',
             left: 0,
@@ -530,7 +530,7 @@ export default function createGridComponent({
           className: 'top-sticky',
           style: {
             height: topLeftStyle.height,
-            width: estimatedTotalWidth,
+            width: width,
             position: 'sticky',
             top: 0,
             zIndex: 2,
@@ -570,7 +570,7 @@ export default function createGridComponent({
           {
             style: {
               position: 'relative',
-              height,
+              height: `calc(${height} - ${botLeftStyle.height})`,
               width,
               overflow: 'auto',
               WebkitOverflowScrolling: 'touch',
@@ -620,20 +620,19 @@ export default function createGridComponent({
                   width: estimatedTotalWidth,
                 },
               })
-            )
+            ),
+            createElement('div', {
+              children: botStickyItems,
+              style: {
+                bottom: '0px',
+                position: 'sticky',
+                height: botLeftStyle.height,
+                width: estimatedTotalWidth,
+                zIndex: 2,
+              },
+            }),
           ]
         ),
-        createElement(
-          'div',
-          {
-            children: botStickyItems,
-            style: {
-              position: 'sticky',
-              height,
-              width: estimatedTotalWidth,
-            },
-          },
-        )
       ];
 
       // return createElement(
