@@ -572,7 +572,7 @@ export default function createGridComponent({
       const innerGridHeight = height - botLeftStyle.height;
       const botStickyOffset = 0 - botLeftStyle.height;
 
-      console.log('did i update???');
+      console.log('did i update 2???');
 
       return createElement(
         'div',
@@ -630,10 +630,6 @@ export default function createGridComponent({
                     height: innerGridHeight,
                     width,
                     overflow: 'auto',
-                    WebkitOverflowScrolling: 'touch',
-                    willChange: 'transform',
-                    direction,
-                    ...style,
                   },
                 },
                 [
@@ -651,7 +647,6 @@ export default function createGridComponent({
               createElement('div', {
                 children: botStickyItems,
                 style: {
-                  bottom: botStickyOffset,
                   position: 'sticky',
                   height: botLeftStyle.height,
                   width: estimatedTotalWidth,
