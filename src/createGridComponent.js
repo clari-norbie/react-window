@@ -564,13 +564,17 @@ export default function createGridComponent({
         this._instanceProps
       );
 
+      console.log('______');
+      console.log(height);
+      console.log(botLeftStyle.height);
+
       return [
         createElement(
           'div',
           {
             style: {
               position: 'relative',
-              height: `calc(${height} - ${botLeftStyle.height})`,
+              height,
               width,
               overflow: 'auto',
               WebkitOverflowScrolling: 'touch',
@@ -602,7 +606,7 @@ export default function createGridComponent({
                 ref: this._outerRefSetter,
                 style: {
                   position: 'relative',
-                  height,
+                  height: `calc(${height} - ${botLeftStyle.height})`,
                   width,
                   overflow: 'auto',
                   WebkitOverflowScrolling: 'touch',
