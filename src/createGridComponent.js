@@ -497,7 +497,7 @@ export default function createGridComponent({
         }
       }
 
-      items.push(
+      items.unshift(
         createElement('div', {
           className: backgroundClassName,
           key: 'grid-background',
