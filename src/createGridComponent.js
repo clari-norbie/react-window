@@ -424,6 +424,7 @@ export default function createGridComponent({
       const items = [];
       const topStickyItems = [];
       const leftStickyItems = [];
+      const botStickyItems = [];
 
       if (columnCount > 0 && rowCount) {
         for (
@@ -439,6 +440,17 @@ export default function createGridComponent({
               key: itemKey({ columnIndex, data: itemData, rowIndex: 0 }),
               rowIndex: 0,
               style: this._getItemStyle(0, columnIndex),
+            })
+          );
+
+          botStickyItems.push(
+            createElement(children, {
+              columnIndex,
+              data: itemData,
+              isScrolling: useIsScrolling ? isScrolling : undefined,
+              key: itemKey({ columnIndex, data: itemData, rowIndex: 0 }),
+              rowIndex: 1,
+              style: this._getItemStyle(1, columnIndex),
             })
           );
         }
@@ -493,6 +505,7 @@ export default function createGridComponent({
       );
 
       const topLeftStyle = this._getItemStyle(0, 0);
+      const botLeftStyle = this._getItemStyle(1, 0);
 
       items.unshift(
         createElement('div', {
@@ -525,6 +538,21 @@ export default function createGridComponent({
         })
       );
 
+      // items.unshift(
+      //   createElement('div', {
+      //     children: botStickyItems,
+      //     key: 'bot-sticky',
+      //     className: 'bot-sticky',
+      //     style: {
+      //       height: botLeftStyle.height,
+      //       width: estimatedTotalWidth,
+      //       position: 'sticky',
+      //       bot: 0,
+      //       zIndex: 2,
+      //     },
+      //   })
+      // );
+
       // Read this value AFTER items have been created,
       // So their actual sizes (if variable) are taken into consideration.
       const estimatedTotalHeight = getEstimatedTotalHeight(
@@ -536,64 +564,77 @@ export default function createGridComponent({
         this._instanceProps
       );
 
-      return createElement(
-        'div',
-        {
-          style: {
-            position: 'relative',
-            height,
-            width,
-            overflow: 'auto',
-            WebkitOverflowScrolling: 'touch',
-            willChange: 'transform',
-            direction,
-            ...style,
-          }
-        }, [
-          createElement(children, {
-            columnIndex: 0,
-            data: itemData,
-            isScrolling: useIsScrolling ? isScrolling : undefined,
-            key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 0 }),
-            rowIndex: 0,
+      return [
+        createElement(
+          'div',
+          {
             style: {
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              height: getRowHeight(this.props, 0, this._instanceProps),
-              width: getColumnWidth(this.props, 0, this._instanceProps),
-            },
-            zIndex: 1,
-          }),
-          createElement(
-            outerElementType || outerTagName || 'div',
-            {
-              className,
-              onScroll: this._onScroll,
-              ref: this._outerRefSetter,
+              position: 'relative',
+              height,
+              width,
+              overflow: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              willChange: 'transform',
+              direction,
+              ...style,
+            }
+          }, [
+            createElement(children, {
+              columnIndex: 0,
+              data: itemData,
+              isScrolling: useIsScrolling ? isScrolling : undefined,
+              key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 0 }),
+              rowIndex: 0,
               style: {
-                position: 'relative',
-                height,
-                width,
-                overflow: 'auto',
-                WebkitOverflowScrolling: 'touch',
-                willChange: 'transform',
-                direction,
-                ...style,
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                height: getRowHeight(this.props, 0, this._instanceProps),
+                width: getColumnWidth(this.props, 0, this._instanceProps),
               },
+              zIndex: 1,
+            }),
+            createElement(
+              outerElementType || outerTagName || 'div',
+              {
+                className,
+                onScroll: this._onScroll,
+                ref: this._outerRefSetter,
+                style: {
+                  position: 'relative',
+                  height,
+                  width,
+                  overflow: 'auto',
+                  WebkitOverflowScrolling: 'touch',
+                  willChange: 'transform',
+                  direction,
+                  ...style,
+                },
+              },
+              createElement(innerElementType || innerTagName || 'div', {
+                children: items,
+                ref: innerRef,
+                style: {
+                  height: estimatedTotalHeight,
+                  pointerEvents: isScrolling ? 'none' : undefined,
+                  width: estimatedTotalWidth,
+                },
+              })
+            )
+          ]
+        ),
+        createElement(
+          'div',
+          {
+            children: botStickyItems,
+            style: {
+              position: 'sticky',
+              height,
+              width: estimatedTotalWidth,
             },
-            createElement(innerElementType || innerTagName || 'div', {
-              children: items,
-              ref: innerRef,
-              style: {
-                height: estimatedTotalHeight,
-                pointerEvents: isScrolling ? 'none' : undefined,
-                width: estimatedTotalWidth,
-              },
-            })
-          )
-        ]
-      )
+          },
+        )
+      ];
 
       // return createElement(
       //   outerElementType || outerTagName || 'div',
