@@ -453,8 +453,8 @@ export default function createGridComponent({
               key: itemKey({ columnIndex, data: itemData, rowIndex: 1 }),
               rowIndex: 1,
               style: {
-                top: '0px',
                 ...botStickyStyle,
+                top: '0px', // override top style
               },
             })
           );
@@ -570,8 +570,7 @@ export default function createGridComponent({
       );
 
       const innerGridHeight = height - botLeftStyle.height;
-
-      console.log('did I update?');
+      const botStickyOffset = 0 - botLeftStyle.height;
 
       return [
         createElement(
@@ -620,26 +619,28 @@ export default function createGridComponent({
                   ...style,
                 },
               },
-              createElement(innerElementType || innerTagName || 'div', {
-                children: items,
-                ref: innerRef,
-                style: {
-                  height: estimatedTotalHeight,
-                  pointerEvents: isScrolling ? 'none' : undefined,
-                  width: estimatedTotalWidth,
-                },
-              })
+              [
+                createElement(innerElementType || innerTagName || 'div', {
+                  children: items,
+                  ref: innerRef,
+                  style: {
+                    height: estimatedTotalHeight,
+                    pointerEvents: isScrolling ? 'none' : undefined,
+                    width: estimatedTotalWidth,
+                  },
+                }),
+                createElement('div', {
+                  children: botStickyItems,
+                  style: {
+                    bottom: botStickyOffset,
+                    position: 'sticky',
+                    height: botLeftStyle.height,
+                    width: estimatedTotalWidth,
+                    zIndex: 2,
+                  },
+                }),
+              ]
             ),
-            createElement('div', {
-              children: botStickyItems,
-              style: {
-                bottom: '0px',
-                position: 'sticky',
-                height: botLeftStyle.height,
-                width: estimatedTotalWidth,
-                zIndex: 2,
-              },
-            }),
           ]
         ),
       ];
