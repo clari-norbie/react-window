@@ -543,7 +543,7 @@ export default function createGridComponent({
       );
 
       botStickyItems.push(
-        createElement('div', {
+        createElement(children, {
           columnIndex: 0,
           data: itemData,
           key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 1 }),
