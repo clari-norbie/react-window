@@ -474,7 +474,7 @@ export default function createGridComponent({
               isScrolling: useIsScrolling ? isScrolling : undefined,
               key: itemKey({ columnIndex: 0, data: itemData, rowIndex }),
               rowIndex,
-              style: this._getItemStyle(rowIndex, 0),
+              style: this._getItemStyle(rowIndex - 1, 0),
             })
           );
 
@@ -490,7 +490,7 @@ export default function createGridComponent({
                 isScrolling: useIsScrolling ? isScrolling : undefined,
                 key: itemKey({ columnIndex, data: itemData, rowIndex }),
                 rowIndex,
-                style: this._getItemStyle(rowIndex, columnIndex),
+                style: this._getItemStyle(rowIndex - 1, columnIndex),
               })
             );
           }
@@ -572,7 +572,7 @@ export default function createGridComponent({
       const innerGridHeight = height - botLeftStyle.height;
       const botStickyOffset = 0 - botLeftStyle.height;
 
-      console.log('did i update 3???');
+      console.log('did i update 4???');
 
       return createElement(
         'div',
@@ -599,21 +599,6 @@ export default function createGridComponent({
               left: 0,
               top: 0,
               height: getRowHeight(this.props, 0, this._instanceProps),
-              width: getColumnWidth(this.props, 0, this._instanceProps),
-              zIndex: 1,
-            },
-          }),
-          createElement(children, {
-            columnIndex: 0,
-            data: itemData,
-            isScrolling: useIsScrolling ? isScrolling : undefined,
-            key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 0 }),
-            rowIndex: 1,
-            style: {
-              bottom: 0,
-              left: 0,
-              height: getRowHeight(this.props, 1, this._instanceProps),
-              position: 'absolute',
               width: getColumnWidth(this.props, 0, this._instanceProps),
               zIndex: 1,
             },
@@ -655,6 +640,21 @@ export default function createGridComponent({
                   zIndex: 2,
                 },
               }),
+              createElement(children, {
+                columnIndex: 0,
+                data: itemData,
+                isScrolling: useIsScrolling ? isScrolling : undefined,
+                key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 1 }),
+                rowIndex: 1,
+                style: {
+                  bottom: 0,
+                  left: 0,
+                  height: getRowHeight(this.props, 1, this._instanceProps),
+                  position: 'sticky',
+                  width: getColumnWidth(this.props, 0, this._instanceProps),
+                  zIndex: 3,
+                },
+              })
             ]
           ),
         ]
