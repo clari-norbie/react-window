@@ -559,10 +559,9 @@ export default function createGridComponent({
 
       // Read this value AFTER items have been created,
       // So their actual sizes (if variable) are taken into consideration.
-      const estimatedTotalHeight = getEstimatedTotalHeight(
-        this.props,
-        this._instanceProps
-      );
+      const estimatedTotalHeight =
+        getEstimatedTotalHeight(this.props, this._instanceProps) -
+        botLeftStyle.height;
       const estimatedTotalWidth = getEstimatedTotalWidth(
         this.props,
         this._instanceProps
@@ -570,8 +569,6 @@ export default function createGridComponent({
 
       const innerGridHeight = height - botLeftStyle.height;
       const botStickyOffset = 0 - botLeftStyle.height;
-
-      console.log('did i update 4???');
 
       return createElement(
         'div',
