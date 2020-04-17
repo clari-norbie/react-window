@@ -637,7 +637,7 @@ export default function createGridComponent({
                 children: items,
                 ref: innerRef,
                 style: {
-                  height: estimatedTotalHeight,
+                  height: Math.max(height, estimatedTotalHeight),
                   pointerEvents: isScrolling ? 'none' : undefined,
                   width: estimatedTotalWidth,
                 },
@@ -652,138 +652,11 @@ export default function createGridComponent({
                   zIndex: 2,
                 },
               }),
-              // createElement(children, {
-              //   columnIndex: 0,
-              //   data: itemData,
-              //   isScrolling: useIsScrolling ? isScrolling : undefined,
-              //   key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 1 }),
-              //   rowIndex: 1,
-              //   style: {
-              //     bottom: 0,
-              //     left: 0,
-              //     height: getRowHeight(this.props, 1, this._instanceProps),
-              //     position: 'sticky',
-              //     width: getColumnWidth(this.props, 0, this._instanceProps),
-              //     zIndex: 3,
-              //   },
-              // })
             ]
           ),
         ]
       );
 
-
-      // return createElement(
-      //   'div',
-      //   {
-      //     style: {
-      //       position: 'relative',
-      //       height,
-      //       width,
-      //       overflow: 'auto',
-      //       WebkitOverflowScrolling: 'touch',
-      //       willChange: 'transform',
-      //       direction,
-      //       ...style,
-      //     }
-      //   }, [
-      //     createElement(children, {
-      //       columnIndex: 0,
-      //       data: itemData,
-      //       isScrolling: useIsScrolling ? isScrolling : undefined,
-      //       key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 0 }),
-      //       rowIndex: 0,
-      //       style: {
-      //         position: 'absolute',
-      //         left: 0,
-      //         top: 0,
-      //         height: getRowHeight(this.props, 0, this._instanceProps),
-      //         width: getColumnWidth(this.props, 0, this._instanceProps),
-      //       },
-      //       zIndex: 1,
-      //     }),
-      //     createElement(
-      //       outerElementType || outerTagName || 'div',
-      //       {
-      //         className,
-      //         onScroll: this._onScroll,
-      //         ref: this._outerRefSetter,
-      //         style: {
-      //           position: 'relative',
-      //           height,
-      //           width,
-      //           overflow: 'auto',
-      //           WebkitOverflowScrolling: 'touch',
-      //           willChange: 'transform',
-      //           direction,
-      //           ...style,
-      //         },
-      //       },
-      //       [
-      //         createElement(
-      //           'div',
-      //           {
-      //             className,
-      //             style: {
-      //               position: 'relative',
-      //               height: innerGridHeight,
-      //               width,
-      //               overflow: 'auto',
-      //             },
-      //           },
-      //           [
-      //             createElement(innerElementType || innerTagName || 'div', {
-      //               children: items,
-      //               ref: innerRef,
-      //               style: {
-      //                 height: estimatedTotalHeight,
-      //                 pointerEvents: isScrolling ? 'none' : undefined,
-      //                 width: estimatedTotalWidth,
-      //               },
-      //             }),
-      //           ]
-      //         ),
-      //         createElement('div', {
-      //           children: botStickyItems,
-      //           style: {
-      //             position: 'sticky',
-      //             height: botLeftStyle.height,
-      //             width: estimatedTotalWidth,
-      //             zIndex: 2,
-      //           },
-      //         }),
-      //       ]
-      //     ),
-      //   ]
-      // );
-
-      // return createElement(
-      //   outerElementType || outerTagName || 'div',
-      //   {
-      //     className,
-      //     onScroll: this._onScroll,
-      //     ref: this._outerRefSetter,
-      //     style: {
-      //       position: 'relative',
-      //       height,
-      //       width,
-      //       overflow: 'auto',
-      //       WebkitOverflowScrolling: 'touch',
-      //       willChange: 'transform',
-      //       direction,
-      //       ...style,
-      //     },
-      //   },
-      //   createElement(innerElementType || innerTagName || 'div', {
-      //     children: items,
-      //     ref: innerRef,
-      //     style: {
-      //       height: estimatedTotalHeight,
-      //       pointerEvents: isScrolling ? 'none' : undefined,
-      //       width: estimatedTotalWidth,
-      //     },
-      //   })
-      // );
     }
 
     _callOnItemsRendered: (
