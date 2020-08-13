@@ -503,8 +503,7 @@ export default function createGridComponent({
       const botLeftStyle = this._getItemStyle(1, 0);
 
       items.push(
-        createElement('div', {
-          children: backgroundComponent,
+        createElement(backgroundComponent || 'div', {
           className: backgroundClassName,
           key: 'grid-background',
           style: {
