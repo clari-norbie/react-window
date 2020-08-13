@@ -63,6 +63,7 @@ type InnerProps = {|
 |};
 
 export type Props<T> = {|
+  backgroundComponent?: RenderComponent<T>,
   backgroundClassName?: string,
   children: RenderComponent<T>,
   className?: string,
@@ -395,6 +396,7 @@ export default function createGridComponent({
 
     render() {
       const {
+        backgroundComponent,
         backgroundClassName,
         children,
         className,
@@ -502,6 +504,7 @@ export default function createGridComponent({
 
       items.push(
         createElement('div', {
+          children: backgroundComponent,
           className: backgroundClassName,
           key: 'grid-background',
           style: {
