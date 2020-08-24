@@ -70,6 +70,7 @@ export type Props<T> = {|
   columnCount: number,
   columnWidth: itemSize,
   direction: Direction,
+  hasFrozenFooter?: boolean,
   height: number,
   initialScrollLeft?: number,
   initialScrollTop?: number,
@@ -402,6 +403,7 @@ export default function createGridComponent({
         className,
         columnCount,
         direction,
+        hasFrozenFooter,
         height,
         innerRef,
         innerElementType,
@@ -445,25 +447,27 @@ export default function createGridComponent({
             })
           );
 
-          const botStickyStyle = this._getItemStyle(1, columnIndex);
+          if (hasFrozenFooter) {
+            const botStickyStyle = this._getItemStyle(1, columnIndex);
 
-          botStickyItems.push(
-            createElement(children, {
-              columnIndex,
-              data: itemData,
-              isScrolling: useIsScrolling ? isScrolling : undefined,
-              key: itemKey({ columnIndex, data: itemData, rowIndex: 1 }),
-              rowIndex: 1,
-              style: {
-                ...botStickyStyle,
-                top: '0px', // override top style
-              },
-            })
-          );
+            botStickyItems.push(
+              createElement(children, {
+                columnIndex,
+                data: itemData,
+                isScrolling: useIsScrolling ? isScrolling : undefined,
+                key: itemKey({ columnIndex, data: itemData, rowIndex: 1 }),
+                rowIndex: 1,
+                style: {
+                  ...botStickyStyle,
+                  top: '0px', // override top style
+                },
+              })
+            );
+          }
         }
 
         for (
-          let rowIndex = Math.max(2, rowStartIndex); // Skip row 0, 1
+          let rowIndex = Math.max(hasFrozenFooter ? 2 : 1, rowStartIndex); // Skip row 0 for header, skip row 1 if has frozen footers
           rowIndex <= rowStopIndex;
           rowIndex++
         ) {
