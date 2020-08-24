@@ -548,21 +548,23 @@ export default function createGridComponent({
         })
       );
 
-      botStickyItems.push(
-        createElement(children, {
-          columnIndex: 0,
-          data: itemData,
-          key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 1 }),
-          rowIndex: 1,
-          style: {
-            left: 0,
-            height: getRowHeight(this.props, 1, this._instanceProps),
-            position: 'sticky',
-            width: getColumnWidth(this.props, 0, this._instanceProps),
-            zIndex: 3,
-          },
-        })
-      );
+      if (hasFrozenFooter) {
+        botStickyItems.push(
+          createElement(children, {
+            columnIndex: 0,
+            data: itemData,
+            key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 1 }),
+            rowIndex: 1,
+            style: {
+              left: 0,
+              height: getRowHeight(this.props, 1, this._instanceProps),
+              position: 'sticky',
+              width: getColumnWidth(this.props, 0, this._instanceProps),
+              zIndex: 3,
+            },
+          })
+        );
+      }
 
       // items.unshift(
       //   createElement('div', {
@@ -591,6 +593,33 @@ export default function createGridComponent({
 
       const innerGridHeight = height - botLeftStyle.height;
       const botStickyOffset = 0 - botLeftStyle.height;
+
+      const innerElements = [
+        createElement(innerElementType || innerTagName || 'div', {
+          children: items,
+          ref: innerRef,
+          style: {
+            height: Math.max(height, estimatedTotalHeight),
+            pointerEvents: isScrolling ? 'none' : undefined,
+            width: estimatedTotalWidth,
+          },
+        }),
+      ];
+
+      if (hasFrozenFooter) {
+        innerElements.push(
+          createElement('div', {
+            children: botStickyItems,
+            style: {
+              bottom: '0px',
+              position: 'sticky',
+              height: botLeftStyle.height,
+              width: estimatedTotalWidth,
+              zIndex: 2,
+            },
+          })
+        );
+      }
 
       return createElement(
         'div',
@@ -638,27 +667,7 @@ export default function createGridComponent({
                 ...style,
               },
             },
-            [
-              createElement(innerElementType || innerTagName || 'div', {
-                children: items,
-                ref: innerRef,
-                style: {
-                  height: Math.max(height, estimatedTotalHeight),
-                  pointerEvents: isScrolling ? 'none' : undefined,
-                  width: estimatedTotalWidth,
-                },
-              }),
-              createElement('div', {
-                children: botStickyItems,
-                style: {
-                  bottom: '0px',
-                  position: 'sticky',
-                  height: botLeftStyle.height,
-                  width: estimatedTotalWidth,
-                  zIndex: 2,
-                },
-              }),
-            ]
+            innerElements
           ),
         ]
       );
