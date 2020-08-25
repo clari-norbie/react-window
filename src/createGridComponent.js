@@ -473,6 +473,8 @@ export default function createGridComponent({
         ) {
           // I'm leveraging this already existing loop, but this is probably
           // better as its own loop for clarity.
+          const rowIndexOffset = hasFrozenFooter ? 1 : 0;
+
           leftStickyItems.push(
             createElement(children, {
               columnIndex: 0,
@@ -480,7 +482,7 @@ export default function createGridComponent({
               isScrolling: useIsScrolling ? isScrolling : undefined,
               key: itemKey({ columnIndex: 0, data: itemData, rowIndex }),
               rowIndex,
-              style: this._getItemStyle(rowIndex - 1, 0),
+              style: this._getItemStyle(rowIndex - rowIndexOffset, 0),
             })
           );
 
@@ -496,7 +498,7 @@ export default function createGridComponent({
                 isScrolling: useIsScrolling ? isScrolling : undefined,
                 key: itemKey({ columnIndex, data: itemData, rowIndex }),
                 rowIndex,
-                style: this._getItemStyle(rowIndex - 1, columnIndex),
+                style: this._getItemStyle(rowIndex - rowIndexOffset, columnIndex),
               })
             );
           }
