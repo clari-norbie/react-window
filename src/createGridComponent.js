@@ -508,19 +508,6 @@ export default function createGridComponent({
       const topLeftStyle = this._getItemStyle(0, 0);
       const botLeftStyle = this._getItemStyle(1, 0);
 
-      items.push(
-        createElement(backgroundComponent || 'div', {
-          className: backgroundClassName,
-          key: 'grid-background',
-          style: {
-            height: '100%',
-            width: '100%',
-            zIndex: 0,
-          }
-        })
-      );
-
-
       items.unshift(
         createElement('div', {
           children: leftStickyItems,
@@ -568,21 +555,6 @@ export default function createGridComponent({
         );
       }
 
-      // items.unshift(
-      //   createElement('div', {
-      //     children: botStickyItems,
-      //     key: 'bot-sticky',
-      //     className: 'bot-sticky',
-      //     style: {
-      //       height: botLeftStyle.height,
-      //       width: estimatedTotalWidth,
-      //       position: 'sticky',
-      //       bot: 0,
-      //       zIndex: 2,
-      //     },
-      //   })
-      // );
-
       // Read this value AFTER items have been created,
       // So their actual sizes (if variable) are taken into consideration.
       const estimatedTotalHeight =
@@ -591,6 +563,18 @@ export default function createGridComponent({
       const estimatedTotalWidth = getEstimatedTotalWidth(
         this.props,
         this._instanceProps
+      );
+
+      items.push(
+        createElement(backgroundComponent || 'div', {
+          className: backgroundClassName,
+          key: 'grid-background',
+          style: {
+            height: '100%',
+            width: Math.max(width, estimatedTotalWidth),
+            zIndex: 0,
+          },
+        })
       );
 
       const innerGridHeight = height - botLeftStyle.height;
