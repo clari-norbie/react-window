@@ -70,6 +70,7 @@ export type Props<T> = {|
   columnCount: number,
   columnWidth: itemSize,
   direction: Direction,
+  hasFrozenFooter?: boolean,
   height: number,
   initialScrollLeft?: number,
   initialScrollTop?: number,
@@ -402,6 +403,7 @@ export default function createGridComponent({
         className,
         columnCount,
         direction,
+        hasFrozenFooter,
         height,
         innerRef,
         innerElementType,
@@ -445,25 +447,27 @@ export default function createGridComponent({
             })
           );
 
-          const botStickyStyle = this._getItemStyle(1, columnIndex);
+          if (hasFrozenFooter) {
+            const botStickyStyle = this._getItemStyle(1, columnIndex);
 
-          botStickyItems.push(
-            createElement(children, {
-              columnIndex,
-              data: itemData,
-              isScrolling: useIsScrolling ? isScrolling : undefined,
-              key: itemKey({ columnIndex, data: itemData, rowIndex: 1 }),
-              rowIndex: 1,
-              style: {
-                ...botStickyStyle,
-                top: '0px', // override top style
-              },
-            })
-          );
+            botStickyItems.push(
+              createElement(children, {
+                columnIndex,
+                data: itemData,
+                isScrolling: useIsScrolling ? isScrolling : undefined,
+                key: itemKey({ columnIndex, data: itemData, rowIndex: 1 }),
+                rowIndex: 1,
+                style: {
+                  ...botStickyStyle,
+                  top: '0px', // override top style
+                },
+              })
+            );
+          }
         }
 
         for (
-          let rowIndex = Math.max(2, rowStartIndex); // Skip row 0, 1
+          let rowIndex = Math.max(hasFrozenFooter ? 2 : 1, rowStartIndex); // Skip row 0 for header, skip row 1 if has frozen footers
           rowIndex <= rowStopIndex;
           rowIndex++
         ) {
@@ -544,21 +548,23 @@ export default function createGridComponent({
         })
       );
 
-      botStickyItems.push(
-        createElement(children, {
-          columnIndex: 0,
-          data: itemData,
-          key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 1 }),
-          rowIndex: 1,
-          style: {
-            left: 0,
-            height: getRowHeight(this.props, 1, this._instanceProps),
-            position: 'sticky',
-            width: getColumnWidth(this.props, 0, this._instanceProps),
-            zIndex: 3,
-          },
-        })
-      );
+      if (hasFrozenFooter) {
+        botStickyItems.push(
+          createElement(children, {
+            columnIndex: 0,
+            data: itemData,
+            key: itemKey({ columnIndex: 0, data: itemData, rowIndex: 1 }),
+            rowIndex: 1,
+            style: {
+              left: 0,
+              height: getRowHeight(this.props, 1, this._instanceProps),
+              position: 'sticky',
+              width: getColumnWidth(this.props, 0, this._instanceProps),
+              zIndex: 3,
+            },
+          })
+        );
+      }
 
       // items.unshift(
       //   createElement('div', {
@@ -587,6 +593,33 @@ export default function createGridComponent({
 
       const innerGridHeight = height - botLeftStyle.height;
       const botStickyOffset = 0 - botLeftStyle.height;
+
+      const innerElements = [
+        createElement(innerElementType || innerTagName || 'div', {
+          children: items,
+          ref: innerRef,
+          style: {
+            height: Math.max(height, estimatedTotalHeight),
+            pointerEvents: isScrolling ? 'none' : undefined,
+            width: estimatedTotalWidth,
+          },
+        }),
+      ];
+
+      if (hasFrozenFooter) {
+        innerElements.push(
+          createElement('div', {
+            children: botStickyItems,
+            style: {
+              bottom: '0px',
+              position: 'sticky',
+              height: botLeftStyle.height,
+              width: estimatedTotalWidth,
+              zIndex: 2,
+            },
+          })
+        );
+      }
 
       return createElement(
         'div',
@@ -634,27 +667,7 @@ export default function createGridComponent({
                 ...style,
               },
             },
-            [
-              createElement(innerElementType || innerTagName || 'div', {
-                children: items,
-                ref: innerRef,
-                style: {
-                  height: Math.max(height, estimatedTotalHeight),
-                  pointerEvents: isScrolling ? 'none' : undefined,
-                  width: estimatedTotalWidth,
-                },
-              }),
-              createElement('div', {
-                children: botStickyItems,
-                style: {
-                  bottom: '0px',
-                  position: 'sticky',
-                  height: botLeftStyle.height,
-                  width: estimatedTotalWidth,
-                  zIndex: 2,
-                },
-              }),
-            ]
+            innerElements
           ),
         ]
       );
